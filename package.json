@@ -1,0 +1,44 @@
+{
+  "name": "nolint",
+  "version": "1.0.0",
+  "description": "A CLI tool, help you to set up lints(eslint, stylelint, hooks...) by a few question",
+  "bin": {
+    "nolint": "bin/index.js"
+  },
+  "scripts": {
+    "commit": "git-cz",
+    "commit:force": "git-cz -n",
+    "lint": "git diff --cached --name-only --diff-filter=d | grep -E '\\.js$' | xargs eslint",
+    "postinstall": "echo \"\\033[32m前往 https://github.com/HaoChuan9421/nolint 查看使用文档! \\033[0m\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HaoChuan9421/nolint.git"
+  },
+  "keywords": [
+    "nolint",
+    "eslint",
+    "stylelint",
+    "hooks"
+  ],
+  "author": "郑昊川",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HaoChuan9421/nolint/issues"
+  },
+  "homepage": "https://github.com/HaoChuan9421/nolint#readme",
+  "devDependencies": {
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.0.2",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "husky": "^3.0.9",
+    "prettier": "^1.19.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
