@@ -4,7 +4,7 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: ["eslint:recommended", "plugin:prettier/recommended"],
+  extends: ["eslint:recommended", "airbnb-base", "plugin:prettier/recommended"],
   globals: {
     Atomics: "readonly",
     SharedArrayBuffer: "readonly",
@@ -12,5 +12,8 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018,
   },
-  rules: {},
+  rules: {
+    "no-console": 0,
+    "consistent-return": 0,
+  },
 };

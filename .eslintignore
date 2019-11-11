@@ -1,0 +1,4 @@
+# eslint 默认忽略 node_modules 和 隐藏文件
+!.eslintrc.js
+!.huskyrc.js
+!.prettierrc.js

@@ -11,6 +11,11 @@
     "lint": "git diff --cached --name-only --diff-filter=d | grep -E '\\.js$' | xargs eslint",
     "postinstall": "echo \"\\033[32m前往 https://github.com/HaoChuan9421/nolint 查看使用文档! \\033[0m\""
   },
+  "files": [
+    "bin/",
+    "locales/",
+    "utils/"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/HaoChuan9421/nolint.git"
@@ -31,7 +36,9 @@
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.0.2",
     "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.1",
     "husky": "^3.0.9",
     "prettier": "^1.19.1"
@@ -40,5 +47,14 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "commander": "^4.0.0",
+    "del": "^5.1.0",
+    "inquirer": "^7.0.0",
+    "lodash": "^4.17.15",
+    "os-locale": "^4.0.0",
+    "update-notifier": "^3.0.1"
   }
 }
