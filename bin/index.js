@@ -6,6 +6,7 @@ const chalk = require("chalk");
 const updateNotifier = require("update-notifier");
 
 const pkg = require("../package");
+
 const createESLint = require("./tasks/eslint");
 const createStylelint = require("./tasks/stylelint");
 const createPrettier = require("./tasks/prettier");
@@ -56,13 +57,13 @@ function promptUser() {
       {
         type: "confirm",
         name: "git-eslint",
-        message: "Git 提交时必须通过的 ESLint 校验（using husky）",
+        message: "Git 提交时必须通过的 ESLint 校验（by husky）",
         default: true,
       },
       {
         type: "confirm",
-        name: "git",
-        message: "Git 提交时必须通过的 stylelint 校验（using husky）",
+        name: "git-stylelint",
+        message: "Git 提交时必须通过的 stylelint 校验（by husky）",
         default: true,
         when(answers) {
           return answers.stylelint;

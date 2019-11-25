@@ -19,14 +19,15 @@ module.exports = function createESLint(config) {
           ".eslintrc",
         ].map(item => path.join(pwd, item))
       );
+      const pkgValue = utils.getPkgValue("eslintConfig");
 
-      if (hasRcFile || utils.getPkgValue("eslintConfig")) {
+      if (hasRcFile || pkgValue) {
         return inquirer
           .prompt([
             {
               type: "confirm",
               message: chalk.yellow(
-                "检测到当前项目已存在 ESLint 配置，是否清楚"
+                "检测到当前项目已存在 ESLint 配置，是否清除"
               ),
               default: true,
               name: "del",
@@ -34,8 +35,8 @@ module.exports = function createESLint(config) {
           ])
           .then(answers => {
             if (answers.del) {
-              del.sync([".eslintrc*"]);
-              utils.delPkgValue("eslintConfig");
+              hasRcFile && del.sync([".eslintrc*"]);
+              pkgValue && utils.delPkgValue("eslintConfig");
             } else {
               return Promise.reject(new Error("未清除已存在的 ESLint 配置！"));
             }
@@ -61,5 +62,10 @@ module.exports = function createESLint(config) {
           encoding: "utf8",
         }
       );
+
+      utils.existFile(path.join(pwd, ".eslintignore")) ||
+        fs
+          .createReadStream(path.join(__dirname, "../tpl/eslintignore.txt"))
+          .pipe(fs.createWriteStream(path.join(pwd, ".eslintignore")));
     });
 };

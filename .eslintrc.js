@@ -15,5 +15,6 @@ module.exports = {
   rules: {
     "no-console": 0,
     "consistent-return": 0,
+    "no-unused-expressions": 0,
   },
 };
