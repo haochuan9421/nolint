@@ -12,6 +12,7 @@ const createStylelint = require("./tasks/stylelint");
 const createPrettier = require("./tasks/prettier");
 const createGitHooks = require("./tasks/husky");
 const createVSCodeSettings = require("./tasks/vscode");
+const installDependencies = require("./tasks/install");
 
 program.version(pkg.version, "-v, --version").parse(process.argv);
 
@@ -75,12 +76,12 @@ function promptUser() {
         message: "选择一个你喜欢的 ESLint 基础配置?",
         choices: [
           {
-            name: "eslint:recommended (https://eslint.org/docs/rules/)",
-            value: "eslint:recommended",
-          },
-          {
             name: "Airbnb Base (https://github.com/airbnb/javascript)",
             value: "airbnb-base",
+          },
+          {
+            name: "eslint:recommended (https://eslint.org/docs/rules/)",
+            value: "eslint:recommended",
           },
           {
             name: "Standard (https://github.com/standard/standard)",
@@ -91,6 +92,7 @@ function promptUser() {
     ])
     .then(answers => {
       Promise.resolve()
+        .then(() => installDependencies(answers))
         .then(() => createESLint(answers))
         .then(() => createStylelint(answers))
         .then(() => createPrettier(answers))

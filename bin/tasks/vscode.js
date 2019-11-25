@@ -13,7 +13,7 @@ module.exports = function createVSCodeSettings(config) {
   }
   return Promise.resolve()
     .then(() => {
-      const hasSettingFile = utils.existFile(
+      const hasSettingFile = utils.exist(
         path.join(pwd, ".vscode/settings.json")
       );
 
@@ -55,7 +55,7 @@ module.exports = function createVSCodeSettings(config) {
         "typescript.validate.enable": false, // 避免 ESLint 插件和 VSCode 自带的 typescript 插件重复提示同一次错误
       };
 
-      if (config.project === "Vue") {
+      if (config.project === "vue") {
         vscodeSettings["eslint.validate"].push({
           language: "vue",
           autoFix: true,
@@ -72,13 +72,15 @@ module.exports = function createVSCodeSettings(config) {
         vscodeSettings["[css]"] = styleSetting;
         vscodeSettings["[less]"] = styleSetting;
         vscodeSettings["[scss]"] = styleSetting;
-        vscodeSettings["[wxss]"] = styleSetting;
+        if (config.project === "wxapp") {
+          vscodeSettings["[wxss]"] = styleSetting;
+        }
       }
 
       return vscodeSettings;
     })
     .then(eslintConfig => {
-      fs.existsSync(path.join(pwd, ".vscode")) ||
+      utils.exist(path.join(pwd, ".vscode")) ||
         fs.mkdirSync(path.join(pwd, ".vscode"));
 
       fs.writeFileSync(

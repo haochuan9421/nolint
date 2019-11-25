@@ -13,7 +13,7 @@ module.exports = function createStylelint(config) {
   }
   return Promise.resolve()
     .then(() => {
-      const hasRcFile = utils.existFile(
+      const hasRcFile = utils.exist(
         [
           ".stylelintrc",
           ".stylelintrc.json",
@@ -56,6 +56,16 @@ module.exports = function createStylelint(config) {
       };
       if (config.prettier) {
         stylelintConfig.extends.push("stylelint-prettier/recommended");
+      }
+      if (config.project === "wxapp") {
+        stylelintConfig.rules = {
+          "unit-no-unknown": [
+            true,
+            {
+              ignoreUnits: ["rpx"],
+            },
+          ],
+        };
       }
       return stylelintConfig;
     })

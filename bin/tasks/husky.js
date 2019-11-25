@@ -13,7 +13,7 @@ module.exports = function createGitHooks(config) {
   }
   return Promise.resolve()
     .then(() => {
-      const hasRcFile = utils.existFile(
+      const hasRcFile = utils.exist(
         [".huskyrc", ".huskyrc.json", ".huskyrc.js"].map(item =>
           path.join(pwd, item)
         )
@@ -63,15 +63,43 @@ module.exports = function createGitHooks(config) {
         }
       );
 
+      utils.setPkgValue(
+        "config.commitizen.path",
+        "./node_modules/cz-conventional-changelog"
+      );
+
+      utils.setPkgValue("scripts.commit", "git-cz");
+      utils.setPkgValue("scripts['commit:force']", "git-cz -n");
+
+      const esFileExt = [
+        "js",
+        "jsx",
+        "ts",
+        "tsx",
+        ...(config.project === "vue" ? ["vue"] : []),
+      ];
       config["git-eslint"] &&
         utils.setPkgValue(
           "scripts.eslint",
-          "git diff --cached --name-only --diff-filter=d | grep -E '\\.(js|jsx|ts|tsx)$' | xargs eslint"
+          `git diff --cached --name-only --diff-filter=d | grep -E '\\.(${esFileExt.join(
+            "|"
+          )})$' | xargs eslint`
         );
+
+      const cssFileExt = [
+        "css",
+        "scss",
+        "less",
+        ...(config.project === "wxapp" ? ["wxss"] : []),
+        ...(config.project === "vue" ? ["vue"] : []),
+        ...(config.project === "react" ? ["js", "jsx", "ts", "tsx"] : []),
+      ];
       config["git-stylelint"] &&
         utils.setPkgValue(
           "scripts.stylelint",
-          "git diff --cached --name-only --diff-filter=d | grep -E '\\.(css|scss|less|wxss)$' | xargs stylelint"
+          `git diff --cached --name-only --diff-filter=d | grep -E '\\.(${cssFileExt.join(
+            "|"
+          )})$' | xargs stylelint`
         );
     });
 };

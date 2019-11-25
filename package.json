@@ -1,6 +1,6 @@
 {
   "name": "nolint",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A CLI tool, help you to set up lints(eslint, stylelint, hooks...) by a few question",
   "bin": {
     "nolint": "bin/index.js"
@@ -51,9 +51,11 @@
   "dependencies": {
     "chalk": "^3.0.0",
     "commander": "^4.0.0",
+    "cross-spawn": "^7.0.1",
     "del": "^5.1.0",
     "inquirer": "^7.0.0",
     "lodash": "^4.17.15",
+    "ora": "^4.0.3",
     "os-locale": "^4.0.0",
     "update-notifier": "^3.0.1"
   }

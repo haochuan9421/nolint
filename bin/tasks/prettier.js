@@ -13,7 +13,7 @@ module.exports = function createPrettier(config) {
   }
   return Promise.resolve()
     .then(() => {
-      const hasRcFile = utils.existFile(
+      const hasRcFile = utils.exist(
         [
           ".prettierrc",
           ".prettierrc.json",
@@ -52,7 +52,12 @@ module.exports = function createPrettier(config) {
       return Promise.resolve();
     })
     .then(() => {
-      fs.createReadStream(path.join(__dirname, "../tpl/prettierrc.txt")).pipe(
+      const tpl =
+        config.project === "wxapp"
+          ? path.join(__dirname, "../tpl/prettierrc-wx.txt")
+          : path.join(__dirname, "../tpl/prettierrc.txt");
+
+      fs.createReadStream(tpl).pipe(
         fs.createWriteStream(path.join(pwd, ".prettierrc.js"))
       );
     });

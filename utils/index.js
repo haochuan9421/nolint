@@ -1,16 +1,21 @@
 const fs = require("fs");
 const path = require("path");
+const spawn = require("cross-spawn");
 const _ = require("lodash");
 
 const pwd = process.cwd();
 
 /**
- * 判断文件是否已存在，只要有一个存在就返回 true
+ * 判断文件或文件夹是否已存在，只要有一个存在就返回 true
  * @param {Array | String} file
  */
-function existFile(file) {
+function exist(file) {
   const files = Array.isArray(file) ? file : [file];
-  return files.some(p => fs.existsSync(p) && fs.statSync(p).isFile());
+  return files.some(
+    p =>
+      fs.existsSync(p) &&
+      (fs.statSync(p).isFile() || fs.statSync(p).isDirectory())
+  );
 }
 
 /**
@@ -19,7 +24,7 @@ function existFile(file) {
  */
 function getPkgValue(key) {
   const pkgPath = path.join(pwd, "package.json");
-  if (!existFile(pkgPath)) {
+  if (!exist(pkgPath)) {
     return "";
   }
   const pkgJSON = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
@@ -33,7 +38,7 @@ function getPkgValue(key) {
  */
 function setPkgValue(key, value) {
   const pkgPath = path.join(pwd, "package.json");
-  if (!existFile(pkgPath)) {
+  if (!exist(pkgPath)) {
     return;
   }
   const pkgJSON = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
@@ -51,9 +56,31 @@ function delPkgValue(key) {
   setPkgValue(key, undefined);
 }
 
+/**
+ * 通过 `npm view` 命令获取指定 npm 包 package.json 中某个字段的值
+ * @param {String} packageName 包名
+ * @param {String} key package.json 的某个 key
+ */
+function fetchPkgValue(packageName, key) {
+  const npmProcess = spawn.sync("npm", ["view", packageName, key, "--json"], {
+    encoding: "utf8",
+  });
+  if (npmProcess.error || npmProcess.stderr) {
+    return "";
+  }
+  const fetchedText = npmProcess.stdout.trim();
+  try {
+    const pkgValue = JSON.parse(fetchedText);
+    return pkgValue;
+  } catch (e) {
+    return fetchedText;
+  }
+}
+
 module.exports = {
-  existFile,
+  exist,
   getPkgValue,
   setPkgValue,
   delPkgValue,
+  fetchPkgValue,
 };

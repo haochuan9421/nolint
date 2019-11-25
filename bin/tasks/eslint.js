@@ -10,7 +10,7 @@ const pwd = process.cwd();
 module.exports = function createESLint(config) {
   return Promise.resolve()
     .then(() => {
-      const hasRcFile = utils.existFile(
+      const hasRcFile = utils.exist(
         [
           ".eslintrc.js",
           ".eslintrc.yaml",
@@ -63,7 +63,7 @@ module.exports = function createESLint(config) {
         }
       );
 
-      utils.existFile(path.join(pwd, ".eslintignore")) ||
+      utils.exist(path.join(pwd, ".eslintignore")) ||
         fs
           .createReadStream(path.join(__dirname, "../tpl/eslintignore.txt"))
           .pipe(fs.createWriteStream(path.join(pwd, ".eslintignore")));
